@@ -1,0 +1,28 @@
+body {
+    background-image: url('/images/college-background.jpg'); /* Add background image */
+    background-size: cover;
+    background-position: center;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.8); /* Add white background with opacity */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control, .form-control-file {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.btn-block {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+}

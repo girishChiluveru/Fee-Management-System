@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/styles/navbar.css" rel="stylesheet">
+    <link href="/styles/register.css" rel="stylesheet">
+</head>
+<body>
+    <%- include('navbar') %>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="text-center mb-4">Register</h1>
+                <% if (typeof error !== 'undefined') { %>
+                    <div class="alert alert-danger"><%= error %></div>
+                <% } %>
+                <form action="/users" method="POST" enctype="multipart/form-data" class="p-4 border rounded bg-light">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="class">Class</label>
+                        <input type="text" class="form-control" id="class" name="class" value="First(Ist)" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dept">Department</label>
+                        <select class="form-control" id="dept" name="dept" required>
+                            <option value="Data Science">Data Science</option>
+                            <option value="Machine Learning(AI/ML)">Machine Learning(AI/ML)</option>
+                            <option value="IT">IT</option>
+                            <option value="Computer Science">Computer Science</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rollno">Roll Number</label>
+                        <input type="text" class="form-control" id="rollno" name="rollno" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fee">Fee</label>
+                        <input type="number" class="form-control" id="fee" name="fee" value="105000" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Upload Image</label>
+                        <input type="file" class="form-control-file" id="image" name="image">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

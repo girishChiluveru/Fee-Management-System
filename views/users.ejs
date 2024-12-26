@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/styles/navbar.css" rel="stylesheet"> <!-- Add new CSS file for navbar -->
+</head>
+<body>
+    <%- include('navbar') %>
+    <div class="container">
+        <h1 class="mt-5">User List</h1>
+        <a href="/users/register" class="btn btn-primary mb-3"> <!-- Updated route -->
+            <i class="fas fa-plus"></i> Register
+        </a>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Class</th>
+                    <th>Dept</th>
+                    <th>Roll No</th>
+                    <th>Fee</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                    <tr>
+                        <td><%= user.name %></td>
+                        <td><%= user.class %></td>
+                        <td><%= user.dept %></td>
+                        <td><%= user.rollno %></td>
+                        <td><%= user.fee %></td>
+                        <td>
+                            <% if (user.image) { %>
+                                <img src="/uploads/<%= user.image %>" alt="User Image" width="100">
+                            <% } else { %>
+                                No Image
+                            <% } %>
+                        </td>
+                        <td>
+                            <form action="/user/edit/<%= user._id %>" method="POST" class="d-inline">
+                                <input type="number" name="fee" placeholder="New Fee" required>
+                                <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                            </form>
+                            <form action="/user/delete/<%= user._id %>" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script> <!-- Add FontAwesome for icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent default form submission
+                    const formData = new FormData(this);
+                    fetch(this.action, {
+                        method: this.method,
+                        body: formData
+                    }).then(response => {
+                        return response.json().then(data => {
+                            return { status: response.status, data };
+                        });
+                    }).then(({ status, data }) => {
+                        if (status === 200 && data.success) {
+                            location.reload(); // Reload the page on success
+                        } else {
+                            alert(data.message || 'An error occurred'); // Display server error message
+                        }
+                    }).catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred');
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
