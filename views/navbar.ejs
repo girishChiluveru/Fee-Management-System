@@ -1,28 +1,77 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="/">KMIT Fee Management</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/users">Users</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/register">Register</a>
-            </li>
-            <% if (typeof token !== 'undefined' && token) { %>
+    <div class="container">
+        <a class="navbar-brand" href="/">KMIT Fee Management</a>
+        <button 
+            class="navbar-toggler" 
+            type="button" 
+            data-toggle="collapse" 
+            data-target="#navbarNav" 
+            aria-controls="navbarNav" 
+            aria-expanded="false" 
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-danger" href="/logout">Logout</a>
+                    <a class="nav-link" href="/">Home</a>
                 </li>
-            <% } else { %>
                 <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
+                    <a class="nav-link" href="/users">Users</a>
                 </li>
-            <% } %>
-        </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+                <% if (typeof token !== 'undefined' && token) { %>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="/logout">Logout</a>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
     </div>
 </nav>
+
+<!-- Bootstrap Toast for Notifications -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
+    <div id="toastNotification" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Notification</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            This is a toast notification.
+        </div>
+    </div>
+</div>
+<!-- Bootstrap CSS -->
+<link 
+    rel="stylesheet" 
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
+    integrity="sha384-MdEjhGDB5Q8UxQ2LT0ZtdfK5HqJzAPaAuQe7RpgnVruNfaBBKP5CijmIDjOec6g7" 
+    crossorigin="anonymous"
+/>
+
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script 
+    src="https://code.jquery.com/jquery-3.5.1.slim.min.js" 
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" 
+    crossorigin="anonymous"
+></script>
+<script 
+    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" 
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldnvQ4BqUPcGRh7rZ9jIWQq4v8pGFkOtMQQp5Ig" 
+    crossorigin="anonymous"
+></script>
+<script 
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" 
+    integrity="sha384-LtrjvnR4/JqsN9iUG1kMqJu3az6rxll9hg5gC9VVH+4GKT8UW33w7f8oLsckE5Z" 
+    crossorigin="anonymous"
+></script>

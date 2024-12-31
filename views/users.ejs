@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/styles/navbar.css" rel="stylesheet"> <!-- Add new CSS file for navbar -->
+    <link href="/styles/navbar.css" rel="stylesheet">
 </head>
 <body>
     <%- include('navbar') %>
@@ -35,16 +35,17 @@
                             <% } else { %>
                                 No Image
                             <% } %>
-                        </td>
-                        <td>
-                            <form action="/user/edit/<%= user._id %>" method="POST" class="d-inline">
-                                <input type="number" name="fee" placeholder="New Fee" required>
-                                <button type="submit" class="btn btn-warning btn-sm">Edit</button>
-                            </form>
-                            <form action="/user/delete/<%= user._id %>" method="POST" class="d-inline">
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        </td>
+                       
+                            <td>
+                                <form action="/users/edit/<%= user._id %>" method="POST" class="d-inline">
+                                    <input type="number" name="fee" placeholder="New Fee" required>
+                                    <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                                </form>
+                                <form action="/users/delete/<%= user._id %>" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                                                    </td>
                     </tr>
                 <% }) %>
             </tbody>
@@ -80,3 +81,32 @@
     </script>
 </body>
 </html>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent default form submission
+                const formData = new FormData(this);
+                fetch(this.action, {
+                    method: this.method,
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                })
+                    .then(response => response.json().then(data => ({ status: response.status, data })))
+                    .then(({ status, data }) => {
+                        if (status === 200) {
+                            location.reload(); // Reload the page on success
+                        } else {
+                            alert(data.message || 'An error occurred');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while processing your request.');
+                    });
+            });
+        });
+    });
+</script>
