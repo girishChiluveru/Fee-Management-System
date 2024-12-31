@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-mongoose.connect('mongodb://localhost:27017/feeManagement', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://GirishChiluveru:admin@cluster0.ytwmf.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true });
 
 const userSchema = new mongoose.Schema({
     password: String,
@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
     dept: String,
     rollno: String,
     fee: Number,
-    image: String // Add image field
+    image: String
 });
 
 const User = mongoose.model('User', userSchema);
@@ -71,11 +71,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// Route to render the navigation bar
-app.get("/navbar", (req, res) => {
-    res.render('navbar');
-});
-
 app.get("/", (req, res) => {
     const token = req.cookies.token;
     res.render('index', { token });
@@ -94,37 +89,49 @@ app.post("/users", upload.single('image'), async (req, res) => {
     const { password, name, class: userClass, dept, rollno, fee } = req.body;
     const image = req.file ? req.file.filename : '';
     
-    // Check if roll number already exists
     const existingUser = await User.findOne({ rollno });
     if (existingUser) {
         return res.render('register', { error: 'Roll number already exists' });
     }
 
-    console.log('Registering user with password:', password); // Debugging line
-
     const newUser = new User({ password, name, class: userClass, dept, rollno, fee, image });
     await newUser.save();
-    console.log('User registered:', newUser); // Debugging line
+    res.redirect('/users');
+});
+
+app.get("/users/edit/:id", authenticateToken, async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+        return res.status(404).send('User not found');
+    }
+    res.render('editUser', { user });
+});
+
+app.post("/users/edit/:id", authenticateToken, upload.single('image'), async (req, res) => {
+    const { password, name, class: userClass, dept, rollno, fee } = req.body;
+    const image = req.file ? req.file.filename : req.body.existingImage;
+
+    await User.findByIdAndUpdate(req.params.id, { password, name, class: userClass, dept, rollno, fee, image });
+    res.redirect('/users');
+});
+
+app.post("/users/delete/:id", authenticateToken, async (req, res) => {
+    await User.findByIdAndDelete(req.params.id);
     res.redirect('/users');
 });
 
 app.post("/login", async (req, res) => {
     const { username, password } = req.body;
-    console.log('Login attempt with username:', username, 'and password:', password); // Debugging line
     try {
         const admin = await Admin.findOne({ username, password });
         if (admin) {
-            console.log('Admin found:', admin); // Debugging line
             const token = jwt.sign({ adminId: admin._id }, 'your_jwt_secret', { expiresIn: '1h' });
-            console.log('Generated token:', token); // Debugging line
             res.cookie('token', token, { httpOnly: true });
-            res.redirect('/users'); // Redirect to users page
+            res.redirect('/users');
         } else {
-            console.log('Admin not found'); // Debugging line
             res.redirect('/login');
         }
     } catch (error) {
-        console.error('Error during login:', error); // Debugging line
         res.redirect('/login');
     }
 });
@@ -138,6 +145,18 @@ app.get("/logout", (req, res) => {
     res.redirect('/login');
 });
 
+// Middleware to handle 404 errors
+app.use((req, res, next) => {
+    res.status(404).render('404', { message: 'Sorry, we could not find that resource!' });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).render('500', { message: 'Something went wrong!' });
+});
+
 app.listen(5000, () => {
     console.log('listening on : 5000');
 });
+
